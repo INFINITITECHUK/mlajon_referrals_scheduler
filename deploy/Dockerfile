@@ -1,4 +1,4 @@
-FROM amazoncorretto:8-alpine-jdk
+FROM amazoncorretto:11-alpine-jdk
 MAINTAINER REDIT <erfan@redltd.tech>                                                                                   
 #RUN apk update && apk add bash                                                                                          
 COPY . /root                                                                                                           

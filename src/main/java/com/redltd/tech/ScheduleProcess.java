@@ -105,7 +105,7 @@ public class ScheduleProcess {
                                     if (currentDate.equals(dt) || (currentDate.isAfter(dt) && currentDate.isBefore(closeDate)) || currentDate.equals(closeDate)){
 
                                         long destPoint = referralConfig.get().getPointSource();
-                                        String query4 = "update SW_TBL_REFER_REQUEST set IS_FIRST_TRANSACTION_DONE = 1 and POINT_GIVEN_DESTINATION = "+ destPoint +" where id = "+ referRequest.getId();
+                                        String query4 = "update SW_TBL_REFER_REQUEST set IS_FIRST_TRANSACTION_DONE = 1 , POINT_GIVEN_DESTINATION = "+ destPoint +" where id = "+ referRequest.getId();
                                         databaseRepo.updateTable(query4);
 
                                     }else {
