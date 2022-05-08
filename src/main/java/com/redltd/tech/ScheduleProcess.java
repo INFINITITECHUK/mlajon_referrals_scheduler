@@ -1,9 +1,11 @@
 package com.redltd.tech;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redltd.tech.db.DSRepo;
 import com.redltd.tech.model.ReferRequest;
 import com.redltd.tech.model.ReferralConfig;
 import com.redltd.tech.model.Request;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -43,6 +45,8 @@ public class ScheduleProcess {
 
                 for (ReferRequest referRequest: referRequests){
 
+                    log.info("Refer Request ->> "+getJsonString(referRequest));
+
                     DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
                     DateTime dt = DateTime.parse(referRequest.getCreatedDate().toString(), dateTimeFormatter);
 
@@ -66,6 +70,8 @@ public class ScheduleProcess {
                                 long sourcePoint = referralConfig.get().getPointSource();
                                 String query2 = "update SW_TBL_REFER_REQUEST set POINT_GIVEN_SOURCE = "+ sourcePoint +" where id = "+ referRequest.getId();
                                 databaseRepo.updateTable(query2);
+
+                                log.info(" ->> Source point is successfully updated!!");
 
                             }else {
 
@@ -108,8 +114,11 @@ public class ScheduleProcess {
                                         String query4 = "update SW_TBL_REFER_REQUEST set IS_FIRST_TRANSACTION_DONE = 1 , POINT_GIVEN_DESTINATION = "+ destPoint +" where id = "+ referRequest.getId();
                                         databaseRepo.updateTable(query4);
 
+                                        log.info(" ->> Destination point is successfully updated!!");
+
                                     }else {
 
+                                        log.info(" ->> First transaction time is over!!");
                                         String query5 = "update SW_TBL_REFER_REQUEST set IS_FIRST_TRANSACTION_DONE = 1 where id = "+ referRequest.getId();
                                         databaseRepo.updateTable(query5);
                                     }
@@ -117,6 +126,8 @@ public class ScheduleProcess {
                                 }else {
 
                                     log.info(" ->> First transaction is over!!");
+                                    String query5 = "update SW_TBL_REFER_REQUEST set IS_FIRST_TRANSACTION_DONE = 1 where id = "+ referRequest.getId();
+                                    databaseRepo.updateTable(query5);
                                 }
 
                             }
@@ -141,6 +152,14 @@ public class ScheduleProcess {
         }
 
         waitSchedule.endBreak();
+
+    }
+
+    @SneakyThrows
+    public String getJsonString(ReferRequest obj){
+
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(obj);
 
     }
 
