@@ -108,6 +108,10 @@ public class ScheduleProcess {
                                         String query4 = "update SW_TBL_REFER_REQUEST set IS_FIRST_TRANSACTION_DONE = 1 and POINT_GIVEN_DESTINATION = "+ destPoint +" where id = "+ referRequest.getId();
                                         databaseRepo.updateTable(query4);
 
+                                    }else {
+
+                                        String query5 = "update SW_TBL_REFER_REQUEST set IS_FIRST_TRANSACTION_DONE = 1 where id = "+ referRequest.getId();
+                                        databaseRepo.updateTable(query5);
                                     }
 
                                 }else {
