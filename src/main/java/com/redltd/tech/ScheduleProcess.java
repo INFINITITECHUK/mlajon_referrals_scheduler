@@ -94,7 +94,7 @@ public class ScheduleProcess {
 
                         for (String service: services){
 
-                            String query3 = "select * from SW_TBL_REQUEST where KEYWORD = '"+ service +"' and Wallet_MSISDN = "+ referRequest.getFriendMsisdn();
+                            String query3 = "select * from SW_TBL_REQUEST where KEYWORD = '"+ service +"' and Wallet_MSISDN = "+ referRequest.getFriendMsisdn() +" order by Created_Date asc offset 0 rows fetch first 5 rows only";
 
                             List<Request> requests = databaseRepo.loadRequest(query3);
 
