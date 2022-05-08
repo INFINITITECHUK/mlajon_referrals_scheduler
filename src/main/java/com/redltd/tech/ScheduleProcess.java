@@ -99,10 +99,10 @@ public class ScheduleProcess {
 
                                 if (requests.size()==1){
 
-                                    DateTime currentDate = DateTime.parse(requests.get(0).getCreatedDate().toString(), dateTimeFormatter);
-                                    DateTime closeDate = currentDate.plusDays(referralConfig.get().getFirstTransactionPeriod());
+                                    DateTime tranDate = DateTime.parse(requests.get(0).getCreatedDate().toString(), dateTimeFormatter);
+                                    DateTime closeDate = dt.plusDays(referralConfig.get().getFirstTransactionPeriod());
 
-                                    if (currentDate.equals(dt) || (currentDate.isAfter(dt) && currentDate.isBefore(closeDate)) || currentDate.equals(closeDate)){
+                                    if (tranDate.equals(dt) || (tranDate.isAfter(dt) && tranDate.isBefore(closeDate)) || tranDate.equals(closeDate)){
 
                                         long destPoint = referralConfig.get().getPointSource();
                                         String query4 = "update SW_TBL_REFER_REQUEST set IS_FIRST_TRANSACTION_DONE = 1 , POINT_GIVEN_DESTINATION = "+ destPoint +" where id = "+ referRequest.getId();
