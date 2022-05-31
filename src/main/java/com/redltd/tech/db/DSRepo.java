@@ -3,9 +3,11 @@ package com.redltd.tech.db;
 import com.redltd.tech.model.ReferRequest;
 import com.redltd.tech.model.ReferralConfig;
 import com.redltd.tech.model.Request;
+import com.redltd.tech.model.Wallet;
 import com.redltd.tech.model.rowmapper.ReferRequestRowMapper;
 import com.redltd.tech.model.rowmapper.ReferralConfigRowMapper;
 import com.redltd.tech.model.rowmapper.RequestRowMapper;
+import com.redltd.tech.model.rowmapper.WalletRowMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -74,6 +76,25 @@ public class DSRepo {
         try{
 
             return jdbcTemplate.query(sql, new ReferralConfigRowMapper())
+                    .stream()
+                    .findFirst();
+
+        }catch (Exception e){
+
+            log.error("Exception: "+ e);
+            return Optional.empty();
+        }
+
+    }
+
+    public Optional<Wallet> loadWallet(long friendMsisdn){
+
+        log.info("LOADING CONFIGURATION...");
+        String sql = "SELECT * FROM SW_TBL_WALLET WHERE Wallet_MSISDN = "+friendMsisdn;
+
+        try{
+
+            return jdbcTemplate.query(sql, new WalletRowMapper())
                     .stream()
                     .findFirst();
 

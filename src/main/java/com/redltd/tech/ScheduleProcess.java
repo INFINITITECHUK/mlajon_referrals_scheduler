@@ -5,6 +5,7 @@ import com.redltd.tech.db.DSRepo;
 import com.redltd.tech.model.ReferRequest;
 import com.redltd.tech.model.ReferralConfig;
 import com.redltd.tech.model.Request;
+import com.redltd.tech.model.Wallet;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
@@ -14,6 +15,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,6 +117,20 @@ public class ScheduleProcess {
                                         databaseRepo.updateTable(query4);
 
                                         log.info(" ->> Destination point is successfully updated!!");
+
+                                        Optional<Wallet> wallet = databaseRepo.loadWallet(referRequest.getFriendMsisdn());
+
+                                        if (wallet.isPresent()){
+
+                                            long reword = wallet.get().getCurrentYearRewardPoint() + destPoint;
+                                            BigDecimal amount = wallet.get().getAmount().subtract(BigDecimal.valueOf(destPoint));
+                                            long msisdn = wallet.get().getWalletMSISDN();
+
+                                            String query7 = "update SW_TBL_WALLET set Amount = "+amount+"1 , Current_Year_Reward_Point = "+ reword +" where Wallet_MSISDN = "+ msisdn;
+                                            databaseRepo.updateTable(query7);
+
+                                            log.info(" ->> Destination wallet is successfully updated!!");
+                                        }
 
                                     }else {
 
