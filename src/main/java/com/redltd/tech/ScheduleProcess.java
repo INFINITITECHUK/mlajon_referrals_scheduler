@@ -132,6 +132,8 @@ public class ScheduleProcess {
                                             log.info(" ->> Destination wallet is successfully updated!!");
                                         }
 
+                                        break;
+
                                     }else {
 
                                         log.info(" ->> First transaction time is over!!");
