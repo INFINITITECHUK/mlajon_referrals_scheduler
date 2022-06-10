@@ -70,7 +70,7 @@ public class DSRepo {
 
     public Optional<ReferralConfig> loadReferralConfig(){
 
-        log.info("LOADING CONFIGURATION...");
+        log.info("LOADING REFERRAL CONFIGURATION...");
         String sql = "SELECT * FROM SW_TBL_REFERRAL_CONFIG";
 
         try{
@@ -89,8 +89,27 @@ public class DSRepo {
 
     public Optional<Wallet> loadWallet(long friendMsisdn){
 
-        log.info("LOADING CONFIGURATION...");
+        log.info("LOADING REFER WALLET...");
         String sql = "SELECT * FROM SW_TBL_WALLET WHERE Wallet_MSISDN = "+friendMsisdn;
+
+        try{
+
+            return jdbcTemplate.query(sql, new WalletRowMapper())
+                    .stream()
+                    .findFirst();
+
+        }catch (Exception e){
+
+            log.error("Exception: "+ e);
+            return Optional.empty();
+        }
+
+    }
+
+    public Optional<Wallet> loadRewordWallet(){
+
+        log.info("LOADING REWORD WALLET...");
+        String sql = "SELECT * FROM SW_TBL_WALLET WHERE Wallet_Code = 108";
 
         try{
 
