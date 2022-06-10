@@ -15,6 +15,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,9 +123,14 @@ public class ScheduleProcess {
                                         if (wallet.isPresent()){
 
                                             long reword = wallet.get().getCurrentYearRewardPoint() + destPoint;
+                                            BigDecimal amount = wallet.get().getAmount().subtract(BigDecimal.valueOf(destPoint));
                                             long msisdn = wallet.get().getWalletMSISDN();
-
-                                            String query7 = "update SW_TBL_WALLET set Current_Year_Reward_Point = "+ reword +" where Wallet_MSISDN = "+ msisdn;
+                                            String query7;
+                                            if (wallet.get().getWalletCode()==108){
+                                                query7 = "update SW_TBL_WALLET set Amount = "+amount+" , Current_Year_Reward_Point = "+ reword +" where Wallet_MSISDN = "+ msisdn;
+                                            }else{
+                                                query7 = "update SW_TBL_WALLET set Current_Year_Reward_Point = "+ reword +" where Wallet_MSISDN = "+ msisdn;
+                                            }
                                             databaseRepo.updateTable(query7);
 
                                             log.info(" ->> Destination wallet is successfully updated!!");
